@@ -1,0 +1,25 @@
+{
+  "name": "jenner/swoole_php_fpm",
+  "description": "php fpm based on swoole extension",
+  "keywords": [
+    "php-fpm"
+  ],
+  "authors": [
+    {
+      "name": "Jenner",
+      "email": "hypxm@qq.com",
+      "homepage": "http://www.huyanping.cn"
+    }
+  ],
+  "license": "MIT",
+  "type": "package",
+  "require": {
+    "php": ">=5.3.0",
+    "lisachenko/protocol-fcgi": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jenner\\Swoole\\PHPFPM\\": "./src"
+    }
+  }
+}
