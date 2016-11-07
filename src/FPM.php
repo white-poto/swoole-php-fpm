@@ -38,6 +38,7 @@ class FPM
             if(FrameParser::hasFrame($this->cache[$fd])) {
                 $record = FrameParser::parseFrame($this->cache[$fd]);
                 $response = $this->handler->handle($record);
+                var_dump($response);
                 $server->send($fd, $response);
             }
         });
