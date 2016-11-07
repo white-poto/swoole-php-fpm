@@ -37,7 +37,8 @@ class FPM
             $this->cache[$fd] .= $data;
             if(FrameParser::hasFrame($this->cache[$fd])) {
                 $record = FrameParser::parseFrame($this->cache[$fd]);
-                $this->handler->handle($record);
+                $response = $this->handler->handle($record);
+                $server->send($fd, $response);
             }
         });
         $this->server->on('close', function (\swoole_server $server, $fd, $from_id) {
