@@ -18,4 +18,5 @@ $server->set(array(
 ));
 
 $fpm = new \Jenner\Swoole\PHPFPM\FPM($server);
+$fpm->registerHandler(new \Jenner\Swoole\PHPFPM\Handler\EchoHandler());
 $fpm->start();
