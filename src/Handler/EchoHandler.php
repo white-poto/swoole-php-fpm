@@ -17,7 +17,7 @@ class EchoHandler implements HandlerInterface
     {
         var_dump($record);
         $messages = array(
-            new Record\Stdout("hello world"),
+            new Record\Stdout("Content-type: text/html\r\n\r\nHello world"),
             new Record\Stdout(),
             new Record\EndRequest(),
         );
