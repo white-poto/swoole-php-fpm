@@ -16,7 +16,9 @@ class EchoHandler implements HandlerInterface
     public function handle(Record $record)
     {
         var_dump($record);
-        $data = "Status: 200\r\nContent-type: text/html\r\nHeader: value\r\n\r\nHello world";
+        $body = "Hello world";
+        $length = strlen($body);
+        $data = "Status: 200\r\nContent-type: text/html\r\nContent-length: {$length}\r\n\r\n{$body}";
 
         $messages = array(
             new Record\Stdout($data),
