@@ -16,8 +16,10 @@ class EchoHandler implements HandlerInterface
     public function handle(Record $record)
     {
         var_dump($record);
+        $data = "Status: 200\r\nContent-type: text/html\r\nHeader: value\r\n\r\nHello world";
+
         $messages = array(
-            new Record\Stdout("Content-type: text/html\r\n\r\nHello world"),
+            new Record\Stdout($data),
             new Record\Stdout(),
             new Record\EndRequest(),
         );
