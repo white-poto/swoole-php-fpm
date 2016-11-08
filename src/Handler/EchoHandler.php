@@ -18,7 +18,7 @@ class EchoHandler implements HandlerInterface
         var_dump($record);
         $body = "Hello world";
         $length = strlen($body);
-        $data = "Status: 200\r\nContent-type: text/html\r\nContent-length: {$length}\r\n\r\n{$body}";
+        $data = "Status: 200\r\nContent-Length: {$length}\r\n\r\n{$body}";
 
         $messages = array(
             new Record\Stdout($data),
