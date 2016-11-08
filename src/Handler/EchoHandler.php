@@ -26,6 +26,9 @@ class EchoHandler implements HandlerInterface
             new Record\Stdout(),
             new Record\EndRequest(),
         );
+        foreach ($messages as $message) {
+            $message->setRequestId($record->getRequestId());
+        }
 
         return join('', $messages);
     }
