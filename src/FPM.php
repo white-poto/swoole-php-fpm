@@ -89,5 +89,6 @@ class FPM
             $responseContent .= $message;
         }
         $server->send($id, $responseContent);
+        $server->close($id);
     }
 }
