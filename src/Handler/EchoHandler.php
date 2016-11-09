@@ -9,27 +9,30 @@
 namespace Jenner\Swoole\PHPFPM\Handler;
 
 
+use Jenner\Swoole\PHPFPM\FCGIRequest;
+use Protocol\FCGI;
 use Protocol\FCGI\Record;
 
 class EchoHandler implements HandlerInterface
 {
-    public function handle(Record $record)
+    public function handle(FCGIRequest $request)
     {
-        var_dump($record);
-        $body = file_get_contents("http://qidian.qpic.cn/qidian_common/349573/c6307e16b36ee882c844f38103628c65/0");
-        $length = strlen($body);
-        $data = "HTTP/1.1 200 OK\r\nServer: X2S_Platform\r\nConnection: keep-alive\r\nDate: Tue, 08 Nov 2016 08:22:43 GMT\r\nCache-Control: max-age=2592000\r\nExpires: Thu, 08 Dec 2016 08:22:43 GMT\r\nLast-Modified: Mon, 07 Nov 2016 11:35:21 GMT\r\nContent-Type: image/jpeg\r\nContent-Length: {$length}\r\nKeep-Alive: timeout=60\r\nX-Cache-Lookup: Hit From Disktank\r\n\r\n";
-        $data .= $body;
+        $body     = var_export($request, true); // let's response with content of all FCGI params from the request
+        $bodySize = strlen($body);
 
-        $messages = array(
-            new Record\Stdout($data),
-            new Record\Stdout(),
-            new Record\EndRequest(),
-        );
+        /** @var Record[] $messages */
+        $messages = [
+            // we can also split responses into several chunks for streaming large response
+            new Record\Stdout("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {$bodySize}\r\n\r\n{$body}"),
+            new Record\Stdout(''), // empty one, according to the specification
+            new Record\EndRequest(FCGI::REQUEST_COMPLETE, $appStatus = 0), // normal request termination
+        ];
+        $responseContent = '';
         foreach ($messages as $message) {
-            $message->setRequestId($record->getRequestId());
+            $message->setRequestId($request->getRequestId());
+            $responseContent .= $message;
         }
 
-        return join('', $messages);
+        return $responseContent;
     }
 }

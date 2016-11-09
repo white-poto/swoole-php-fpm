@@ -9,9 +9,10 @@
 namespace Jenner\Swoole\PHPFPM\Handler;
 
 
+use Jenner\Swoole\PHPFPM\FCGIRequest;
 use Protocol\FCGI\Record;
 
 interface HandlerInterface
 {
-    public function handle(Record $record);
+    public function handle(FCGIRequest $request);
 }
