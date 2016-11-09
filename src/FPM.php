@@ -92,7 +92,7 @@ class FPM
     {
         $response = $this->handler->handle($request);
         $this->server->send($id, $response);
-        if ($request->getFlags() != 0) {
+        if ($request->getFlags() != 1) {
             $this->server->close($id);
         }
     }
