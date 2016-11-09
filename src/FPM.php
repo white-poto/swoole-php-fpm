@@ -10,7 +10,7 @@ namespace Jenner\Swoole\PHPFPM;
 
 
 use Jenner\Swoole\PHPFPM\Cache\CacheInterface;
-use Jenner\Swoole\PHPFPM\Exception\ProtocolException;
+use Jenner\Swoole\PHPFPM\Exceptions\ProtocolException;
 use Jenner\Swoole\PHPFPM\Handler\HandlerInterface;
 use Protocol\FCGI\FrameParser;
 use Protocol\FCGI\Record\BeginRequest;
@@ -59,7 +59,7 @@ class FPM
 
             if ($message instanceof BeginRequest) {
                 $request_id = $message->getRequestId();
-                if (!$this->cache->has($request_id)) {
+                if ($this->cache->has($request_id)) {
                     $request = $this->cache->get($request_id);
                     $this->cache->delete($request_id);
                     throw new ProtocolException($request);

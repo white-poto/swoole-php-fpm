@@ -6,7 +6,7 @@
  * Time: 11:28
  */
 
-namespace Jenner\Swoole\PHPFPM\Exception;
+namespace Jenner\Swoole\PHPFPM\Exceptions;
 
 
 class ProtocolException extends \Exception
