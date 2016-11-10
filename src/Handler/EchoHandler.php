@@ -26,7 +26,7 @@ class EchoHandler implements HandlerInterface
             'Content-Length' => strlen($body),
         );
 
-        $response = new Response(200, $headers, $body);
+        $response = new Response($status, $headers, $body);
         return $response;
     }
 }
