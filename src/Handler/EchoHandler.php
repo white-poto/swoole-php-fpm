@@ -17,6 +17,7 @@ class EchoHandler implements HandlerInterface
 {
     public function handle(FCGIRequest $request)
     {
+        var_dump($request);
         $body     = var_export($request, true); // let's response with content of all FCGI params from the request
         $bodySize = strlen($body);
 
