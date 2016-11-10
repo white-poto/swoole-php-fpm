@@ -62,7 +62,7 @@ class FPM
                 if ($this->cache->has($request_id)) {
                     $request = $this->cache->get($request_id);
                     $this->cache->delete($request_id);
-                    throw new ProtocolException($request);
+                    throw new ProtocolException($request->getRequestId());
                 }
                 $request = new FCGIRequest(
                     $message->getRequestId(),
@@ -76,13 +76,15 @@ class FPM
                 $this->cache->set($message->getRequestId(), $request);
             }
             if ($message instanceof Stdin) {
-                $request = $this->cache->get($message->getRequestId());
+                $request_id = $message->getRequestId();
+                $request = $this->cache->get($request_id);
                 $isLastParam = $message->getContentLength() == 0;
                 if (!$isLastParam) {
                     $request->appendStdin($message->getContentData());
                     $this->cache->set($message->getRequestId(), $request);
                 } else {
                     $this->onRequest($id, $request);
+                    $this->cache->delete($request_id);
                 }
             }
         }
