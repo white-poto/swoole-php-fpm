@@ -90,8 +90,10 @@ class FPM
 
     protected function onRequest($id, FCGIRequest $request)
     {
-        $response = $this->handler->handle($request);
-        $this->server->send($id, $response);
+        $http_request = ProtocolTranslator::translateRequest($request);
+        $response = $this->handler->handle($http_request);
+        $message = ProtocolTranslator::translateResponse($request->getRequestId(), $response);
+        $this->server->send($id, $message);
         if ($request->getFlags() != 1) {
             $this->server->close($id);
         }

@@ -8,11 +8,14 @@
 
 namespace Jenner\Swoole\PHPFPM\Handler;
 
-
-use Jenner\Swoole\PHPFPM\FCGIRequest;
-use Protocol\FCGI\Record;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 interface HandlerInterface
 {
-    public function handle(FCGIRequest $request);
+    /**
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     */
+    public function handle(RequestInterface $request);
 }

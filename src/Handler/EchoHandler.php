@@ -9,31 +9,24 @@
 namespace Jenner\Swoole\PHPFPM\Handler;
 
 
+use GuzzleHttp\Psr7\Response;
 use Jenner\Swoole\PHPFPM\FCGIRequest;
 use Protocol\FCGI;
 use Protocol\FCGI\Record;
+use Psr\Http\Message\RequestInterface;
 
 class EchoHandler implements HandlerInterface
 {
-    public function handle(FCGIRequest $request)
+    public function handle(RequestInterface $request)
     {
-        var_dump($request);
-        $body     = var_export($request, true); // let's response with content of all FCGI params from the request
-        $bodySize = strlen($body);
+        $status = 200;
+        $body = "test";
+        $headers = array(
+            'Content-Type' => 'text/plain',
+            'Content-Length' => strlen($body),
+        );
 
-        /** @var Record[] $messages */
-        $messages = [
-            // we can also split responses into several chunks for streaming large response
-            new Record\Stdout("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {$bodySize}\r\n\r\n{$body}"),
-            new Record\Stdout(''), // empty one, according to the specification
-            new Record\EndRequest(FCGI::REQUEST_COMPLETE, $appStatus = 0), // normal request termination
-        ];
-        $responseContent = '';
-        foreach ($messages as $message) {
-            $message->setRequestId($request->getRequestId());
-            $responseContent .= $message;
-        }
-
-        return $responseContent;
+        $response = new Response(200, $headers, $body);
+        return $response;
     }
 }

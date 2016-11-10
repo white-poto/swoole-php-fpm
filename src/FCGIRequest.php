@@ -107,11 +107,15 @@ class FCGIRequest
     }
 
     /**
-     * @param $param
+     * @param array $params
      * @return $this
      */
-    public function addParams($param) {
-        $this->params[] = $param;
+    public function addParams(array $params)
+    {
+        foreach ($params as $key => $value) {
+            $this->params[$key] = $value;
+        }
+
         return $this;
     }
 
